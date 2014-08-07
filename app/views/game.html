@@ -1,0 +1,17 @@
+<div class="game">
+    <div ng-repeat="row in mainCtrl.board.board">
+        <div>
+            <span ng-repeat="cell in row ">
+                <button class="cell"
+                        ng-disabled="cell.isRevealed()"
+                        ng-click="mainCtrl.board.reveal($parent.$index, $index)"
+                        right-click = "mainCtrl.board.toggleFlag($parent.$index, $index)"
+                        ng-class="{flag: cell.isFlagged(),mine: cell.content === -1, notrevealed: !cell.isRevealed(), revealed: cell.isRevealed() }">
+                    <span  ng-class="{zero: cell.content === 0, mine: cell.content === -1, notrevealed: !cell.isRevealed(), revealed: cell.isRevealed()}">
+                        {{cell.content}}
+                    </span>
+                </button>
+            </span>
+        </div>
+    </div>
+</div>

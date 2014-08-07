@@ -8,7 +8,9 @@
   }
 
   Cell.prototype.toggleFlag = function () {
-    this.flagged = !this.flagged;
+    if (this.revealed === false) {
+      this.flagged = !this.flagged;
+    }
   };
 
   Cell.prototype.isFlagged = function () {
@@ -19,7 +21,9 @@
     this.content = newContent;
   };
   Cell.prototype.reveal = function () {
-    this.revealed = true;
+    if (this.flagged === false) {
+      this.revealed = true;
+    }
   };
 
   Cell.prototype.isRevealed = function () {
@@ -37,6 +41,9 @@
   /* @ngInject */
   function BoardFactory(rand) {
     function Board(rows, cols, mines) {
+      if (mines > rows * cols) {
+        throw 'Too much mines';
+      }
       this.rows = rows;
       this.cols = cols;
       this.mines = mines;
@@ -61,7 +68,7 @@
       var randomNumber, randomRow, randomCol;
       for (var i = 0; i < this.mines; i++) {
         do {
-          randomNumber = rand.getRand();
+          randomNumber = rand.getRand(this.rows * this.cols - 1);
           randomRow = Math.floor(randomNumber / this.cols);
           randomCol = randomNumber % this.cols;
         } while (this.isMine(randomRow, randomCol) === true);
@@ -104,11 +111,6 @@
       return minesNeighbours;
     };
 
-    Board.prototype.isValidAndZero = function (row, col) {
-      return this.isValidCell(row, col) && this.cellAt(row, col) === 0;
-    };
-
-
     Board.prototype.isValidAndMine = function (row, col) {
       return this.isValidCell(row, col) && this.isMine(row, col);
     };
@@ -128,6 +130,15 @@
     Board.prototype.setState = function (newState) {
       if (this.state === 'play') {
         this.state = newState;
+        alert(newState);
+      }
+    };
+
+    Board.prototype.revealAll = function () {
+      for (var i = 0; i < this.rows; i++) {
+        for (var j = 0; j < this.cols; j++) {
+          this.reveal(i, j);
+        }
       }
     };
 
@@ -139,18 +150,20 @@
       this.board[row][col].reveal();
       if (this.isMine(row, col)) {
         this.setState('lose');
-      } else {
-        this.unRevealed--;
-        if (this.unRevealed === 0) {
-          this.setState('win');
-        }
-        if (this.cellAt(row, col) === 0) {
-          var options = [-1, 0, 1];
-          for (var i = 0; i < 3; i++) {
-            for (var j = 0; j < 3; j++) {
-              if (this.isValidAndZero(row + options[i], col + options[j])) {
-                this.reveal(row + options[i], col + options[j]);
-              }
+        this.revealAll();
+        return;
+      }
+
+      this.unRevealed--;
+      if (this.unRevealed === 0) {
+        this.setState('win');
+      }
+      if (this.cellAt(row, col) === 0) {
+        var options = [-1, 0, 1];
+        for (var i = 0; i < 3; i++) {
+          for (var j = 0; j < 3; j++) {
+            if (this.isValidCell(row + options[i], col + options[j])) {
+              this.reveal(row + options[i], col + options[j]);
             }
           }
         }
@@ -162,7 +175,7 @@
     };
 
     Board.prototype.toggleFlag = function (row, col) {
-      if (this.isRevealed(row, col) === false) {
+      if (this.state == 'play' && this.isRevealed(row, col) === false) {
         this.board[row][col].toggleFlag();
       }
     };

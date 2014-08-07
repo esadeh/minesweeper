@@ -80,6 +80,7 @@
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/services/Board.js"></script>
     <script src="scripts/services/rand.js"></script>
+    <script src="scripts/directives/rightClick.js"></script>
     <!-- endbuild --><!-- scripts -->
     <!-- end-process-tags -->
 

@@ -1,0 +1,13 @@
+<!--<div>Panel</div>-->
+<!--<div>rows</div>-->
+<!--<div>cols</div>-->
+<!--<div>mines</div>-->
+
+<form name="reviewForm">
+    <fieldset class="form-group">
+        <input rows="1" ng-model="mainCtrl.rows" type="number" class="form-control" placeholder="Number of rows (default: 10)" title="Review"></input>
+        <input rows="1" ng-model="mainCtrl.cols" type="number" class="form-control" placeholder="Number of cols (default: 10)" title="Review"></input>
+        <input rows="1" ng-model="mainCtrl.mines" type="number" class="form-control" placeholder="Number of mines (default: 10)" title="Review"></input>
+        <input ng-click="mainCtrl.startGame()" type="submit" class="submit" value="Start playing!" />
+    </fieldset>
+</form>

@@ -246,13 +246,29 @@ describe('Service: Board', function () {
     expect(game.isRevealed(3, 3)).toBe(true);
     expect(game.isRevealed(3, 4)).toBe(true);
 
-    expect(game.isRevealed(1, 1)).toBe(false);
-    expect(game.isRevealed(1, 2)).toBe(false);
-    expect(game.isRevealed(1, 3)).toBe(false);
-    expect(game.isRevealed(1, 4)).toBe(false);
+    expect(game.isRevealed(1, 1)).toBe(true);
+    expect(game.isRevealed(1, 2)).toBe(true);
+    expect(game.isRevealed(1, 3)).toBe(true);
+    expect(game.isRevealed(1, 4)).toBe(true);
 
-    expect(game.isRevealed(2, 0)).toBe(false);
-    expect(game.isRevealed(2, 1)).toBe(false);
+    expect(game.isRevealed(2, 0)).toBe(true);
+    expect(game.isRevealed(2, 1)).toBe(true);
+
+    expect(game.isRevealed(0, 0)).toBe(false);
+    expect(game.isRevealed(0, 1)).toBe(false);
+    expect(game.isRevealed(0, 2)).toBe(false);
+    expect(game.isRevealed(0, 3)).toBe(false);
+    expect(game.isRevealed(0, 4)).toBe(false);
+    expect(game.isRevealed(1, 0)).toBe(false);
+
   });
+//
+//  it('should throw exception when asking for more mines than cells', function () {
+//
+//    var rows = 4;
+//    var cols = 5;
+//     ;
+//    expect(new Board(rows, cols, 220)).toThrow('Too much mines')
+//  });
 
 });
